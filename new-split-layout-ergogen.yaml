@@ -1,0 +1,194 @@
+meta:
+  engine: 4.1.0
+units:
+  # Proxy Spacing Variables
+  kx: u #19mm spacing between key centers
+  ky: u # 19mm spacing between key centers
+
+  # Padding Variables
+  px: kx + 4
+  py: ky + 4
+
+  kcow: 14 # MX plate cutout width
+  kcoh: 14 # MX plate cutout height
+  keycw: 18 # keycap width (MX 18 mm)
+  keych: 18 # keycap height (MX 18 mm)
+
+points:
+  zones:
+    matrix:
+      # Fix placement on KiCAD sheet
+      anchor: 
+        shift: [100, -125]
+      key:
+        padding: 1py
+        spread: 1px
+      columns:
+        outer:
+        pinky:
+        ring:
+          key.stagger: 5
+        middle:
+          key.stagger: 3
+        index:
+          key.stagger: -5
+        inner:
+      rows:
+        bottom:
+        home:
+        top:
+        num:
+    thumbs:
+      key:
+        padding: 1ky
+        spread: 1px
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [0, -50]
+      columns:
+        layer:
+          key.splay: -15
+        space:
+        enter:
+      rows:
+        bottom:
+          padding: 1py
+        top:
+
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      bound: true
+      size: [px, py]
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [kx-0.5,ky-0.5]
+  encoder:
+    - what: rectangle
+      where: matrix_inner_bottom
+      bound: false
+      size: [kx, ky]
+      adjust:
+        shift: [1.05px, 0.25ky]
+  board:
+    - what: polygon
+      operation: stack
+      points:
+        #Main hand top
+        - ref: matrix_outer_num
+          shift: [-0.6px,0.6py]
+        - ref: matrix_pinky_num
+          shift: [-0.5px,0.6py]
+        - ref: matrix_middle_num
+          shift: [-0.5px,0.6py]
+        - ref: matrix_middle_num
+          shift: [0px,0.6py]
+        - ref: matrix_middle_num
+          shift: [0.5px,0.6py]
+        - ref: matrix_index_num
+          shift: [0.5px,0.6py]
+        - ref: matrix_inner_num
+          shift: [0.5px,0.6py]
+        #Special side edge
+        - ref: matrix_inner_num
+          shift: [1.6px,0.6py]
+        - ref: matrix_inner_home
+          shift: [1.6px,2py]
+        - ref: matrix_inner_home
+          shift: [1.6px,-1.75py]
+        #Thumb cluster and bottom edge
+        - ref: thumbs_enter_top
+          shift: [0.65px,0.75py]
+        - ref: thumbs_enter_top
+          shift: [0.65px,-0.75py]
+        - ref: thumbs_enter_bottom
+          shift: [0.65px,-0.65py]
+        - ref: thumbs_layer_bottom
+          shift: [-0.5px,-0.65py]
+        - ref: matrix_pinky_bottom
+          shift: [2.5px,-0.6py]
+        - ref: matrix_outer_bottom
+          shift: [-0.6px,-0.6py]
+      fillet: 3
+  combo:
+    - name: board
+    - operation: subtract
+      name: keys
+    - name: combo
+    - operation: subtract
+      name: encoder
+pcbs:
+  # main:
+  #   outlines:
+  #     main:
+  #       outline: board
+  ice60:
+    template: kicad8
+    footprints:
+      # mx_hotswap:
+      #   what: mx
+      #   where: true
+      #   params:
+      #     keycaps: true
+      #     reverse: true
+      #     hotswap: true
+      #     from: "{{column_net}}"
+      #     to: "{{colrow}}"
+      keys:
+        what: ceoloide/switch_mx
+        where: true
+        params:
+          to: "{{column_net}}"
+          from: "{{colrow}}"
+          reversible: true
+          include_keycap: true
+          hotswap: true
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+      rp2040:
+        what: rp_2040_zero
+        params:  
+        where:
+          ref: matrix_inner_top
+          shift: [0.7kx, 0.5ky]
+          rotate: 0
+      oled:
+        what: oled
+        params:
+          side: "F"
+          SDA: P2
+          SCL: P3
+        where:
+          ref: matrix_inner_top
+          shift: [0.95kx, 0.25ky]
+          rotate: 90
+      reset:
+        what: button
+        params:
+          from: GND
+          to: RST
+        where:
+          ref: matrix_inner_top
+          shift: [1.2kx, 0]
+          rotate: -90
+      rotary:
+        what: rotary
+        params:
+          designator: 'ROT'
+          from: undefined
+          to: undefined
+          A: undefined
+          B: GND
+          C: undefined
+        where: 
+          ref: matrix_inner_bottom
+          shift: [1.05px, 0.25ky]
