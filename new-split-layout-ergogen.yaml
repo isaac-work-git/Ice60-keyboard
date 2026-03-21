@@ -11,8 +11,6 @@ units:
 
   kcow: 14 # MX plate cutout width
   kcoh: 14 # MX plate cutout height
-  keycw: 18 # keycap width (MX 18 mm)
-  keych: 18 # keycap height (MX 18 mm)
 
 points:
   zones:
@@ -121,22 +119,12 @@ outlines:
     - operation: subtract
       name: encoder
 pcbs:
-  # main:
-  #   outlines:
-  #     main:
-  #       outline: board
   ice60:
     template: kicad8
+    outlines:
+      main:
+        outline: board
     footprints:
-      # mx_hotswap:
-      #   what: mx
-      #   where: true
-      #   params:
-      #     keycaps: true
-      #     reverse: true
-      #     hotswap: true
-      #     from: "{{column_net}}"
-      #     to: "{{colrow}}"
       keys:
         what: ceoloide/switch_mx
         where: true
@@ -144,16 +132,19 @@ pcbs:
           to: "{{column_net}}"
           from: "{{colrow}}"
           reversible: true
-          include_keycap: true
           hotswap: true
+          include_keycap: true
       diode:
-        what: diode
+        what: ceoloide/diode_tht_sod123
         where: true
         params:
           from: "{{colrow}}"
           to: "{{row_net}}"
+          reversible: true
+          include_tht: true
         adjust:
           shift: [0, -5]
+      # Make sure this is the right model
       rp2040:
         what: rp_2040_zero
         params:  
@@ -161,6 +152,7 @@ pcbs:
           ref: matrix_inner_top
           shift: [0.7kx, 0.5ky]
           rotate: 0
+      # Double check what model of oled I want
       oled:
         what: oled
         params:
@@ -169,7 +161,7 @@ pcbs:
           SCL: P3
         where:
           ref: matrix_inner_top
-          shift: [0.95kx, 0.25ky]
+          shift: [0.93kx, 0.25ky]
           rotate: 90
       reset:
         what: button
@@ -178,17 +170,20 @@ pcbs:
           to: RST
         where:
           ref: matrix_inner_top
-          shift: [1.2kx, 0]
+          shift: [1.2kx, -5]
           rotate: -90
-      rotary:
-        what: rotary
-        params:
-          designator: 'ROT'
-          from: undefined
-          to: undefined
-          A: undefined
-          B: GND
-          C: undefined
+      # Find the right model
+      # rj45:
+      #   what: 
+      
+      encoder:
+        what: ceoloide/rotary_encoder_ec11_ec12
         where: 
           ref: matrix_inner_bottom
           shift: [1.05px, 0.25ky]
+        params:
+          reversible: true
+          A: "{{nets.a}}"
+          B: "{{nets.b}}"
+          S1: "{{nets.from}}"
+          S2: "{{nets.to}}"
