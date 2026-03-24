@@ -172,9 +172,22 @@ pcbs:
           ref: matrix_inner_top
           shift: [1.2kx, -5]
           rotate: -90
-      # Find the right model
-      # rj45:
-      #   what: 
+
+      rj45:
+        what: rj45_connector
+        where:
+          ref: matrix_inner_home
+          shift: [0.9kx, 0.1ky]
+          rotate: 90
+        params:
+          P1: GND
+          P2: VCC
+          P3: SDA
+          P4: SCL
+          P5: RST
+          P6: ENC_A
+          P7: ENC_B
+          P8: DETECT
       
       encoder:
         what: ceoloide/rotary_encoder_ec11_ec12
