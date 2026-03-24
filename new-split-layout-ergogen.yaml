@@ -150,34 +150,31 @@ pcbs:
         params:  
         where:
           ref: matrix_inner_top
-          shift: [0.7kx, 0.5ky]
+          shift: [0.7kx, 0.6ky]
           rotate: 0
-      # Double check what model of oled I want
       oled:
         what: oled
         params:
           side: "F"
-          SDA: P2
-          SCL: P3
+          SDA: P10
+          SCL: P11
         where:
           ref: matrix_inner_top
-          shift: [0.93kx, 0.25ky]
-          rotate: 90
+          shift: [1.5kx, 0.5ky]
+          rotate: 270
       reset:
         what: button
         params:
           from: GND
           to: RST
         where:
-          ref: matrix_inner_top
-          shift: [1.2kx, -5]
-          rotate: -90
-
+          ref: matrix_inner_bottom
+          shift: [1.2kx, -0.7ky]
       rj45:
         what: rj45_connector
         where:
           ref: matrix_inner_home
-          shift: [0.9kx, 0.1ky]
+          shift: [0.9kx, -2]
           rotate: 90
         params:
           P1: GND
@@ -193,10 +190,28 @@ pcbs:
         what: ceoloide/rotary_encoder_ec11_ec12
         where: 
           ref: matrix_inner_bottom
-          shift: [1.05px, 0.25ky]
+          shift: [1.05px, 0]
         params:
           reversible: true
           A: "{{nets.a}}"
           B: "{{nets.b}}"
           S1: "{{nets.from}}"
           S2: "{{nets.to}}"
+
+      text:
+        what: ceoloide/utility_text
+        where:
+          ref: matrix_index_bottom
+          shift: [0,-1.6ky]
+        adjust:
+          rotate: -65
+        params:
+            designator: 'TXT'
+            side: 'F'
+            thickness: 0.75
+            height: 5
+            width: 5
+            knockout: true
+            bold: true
+            italic: true
+            text: 'IceCap60'
