@@ -231,7 +231,7 @@ pcbs:
           P6: DETECT
           P7: NC
           P8: NC
-      # EC11 encoder footprint
+      # EC11 encoder footprint, do I need pull-up resistors?
       encoder:
         what: ceoloide/rotary_encoder_ec11_ec12
         where: 
