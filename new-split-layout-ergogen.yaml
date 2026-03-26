@@ -167,7 +167,7 @@ pcbs:
           shift: [0.7kx, 0.6ky]
           rotate: 0
         params: 
-          GP0: GND
+          GP0: NC
           GP1: ENC_SW
           # I2C shared bus
           GP2: SDA
@@ -191,7 +191,7 @@ pcbs:
           GP28: C2
           GP29: C1
           # Power
-          P3V3: VCC # or leave unused depending on your board
+          P3V3: NC
           P5V: VCC
           GND: GND
       # 0.96" OLED 128x64 SSD1306 (Nets ready for checking)
