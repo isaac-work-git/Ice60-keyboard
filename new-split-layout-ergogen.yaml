@@ -79,13 +79,6 @@ outlines:
       where: true
       bound: false
       size: [kx-0.5,ky-0.5]
-  encoder:
-    - what: rectangle
-      where: matrix_inner_bottom
-      bound: false
-      size: [kx, ky]
-      adjust:
-        shift: [1.05px, 0.25ky]
   board:
     - what: polygon
       operation: stack
@@ -130,9 +123,7 @@ outlines:
     - name: board
     - operation: subtract
       name: keys
-    - name: combo
-    - operation: subtract
-      name: encoder
+    
 pcbs:
   ice60:
     template: kicad8
@@ -205,15 +196,6 @@ pcbs:
           ref: matrix_inner_top
           shift: [1.5kx, 0.5ky]
           rotate: 270
-      # reset:
-      #   what: button
-      #   params:
-      #     from: GND
-      #     to: RST
-      #   where:
-      #     ref: matrix_inner_bottom
-      #     shift: [1.2kx, -0.7ky]
-      
       # Make sure this is correct and see 
       # if there is anything I can wire on P7/P8
       rj45:
@@ -236,13 +218,69 @@ pcbs:
         what: ceoloide/rotary_encoder_ec11_ec12
         where: 
           ref: matrix_inner_bottom
-          shift: [1.05px, 0]
+          shift: [1.05px, -5]
         params:
           reversible: true
           A: ENC_A
           B: ENC_B
           S1: ENC_SW
           S2: GND
+
+      # diy jumper pads using ergogen pad footprint
+      # SDA jumper (RJ45 P3 <-> MCU SDA)
+      jumper_sda:
+        what: jumper_rj45
+        params:
+          from: P3
+          to: SDA
+        where:
+          ref: matrix_inner_home
+          shift: [1.1kx, -0.75ky]
+          rotate: 90
+
+      # SCL jumper (RJ45 P4 <-> MCU SCL)
+      jumper_scl:
+        what: jumper_rj45
+        params:
+          from: P4
+          to: SCL
+        where:
+          ref: matrix_inner_home
+          shift: [1.2kx, -0.75ky]
+          rotate: 90
+
+      # RST jumper (RJ45 P5 <-> MCU RST)
+      jumper_rst:
+        what: jumper_rj45
+        params:
+          from: P5
+          to: RST
+        where:
+          ref: matrix_inner_home
+          shift: [1.3kx, -0.75ky]
+          rotate: 90
+
+      # DETECT jumper (RJ45 P6 <-> MCU DETECT)
+      jumper_detect:
+        what: jumper_rj45
+        params:
+          from: P6
+          to: DETECT
+        where:
+          ref: matrix_inner_home
+          shift: [1.4kx, -0.75ky]
+          rotate: 90
+
+      jumper_box:
+        what: jumper_box
+        params:
+          w: 8     # width of the box (adjust to taste)
+          h: 3     # height of the box
+          side: "B"
+        where:
+          ref: matrix_inner_home
+          shift: [1.25kx, -0.75ky]   # center of the jumper row
+
       # Silkscreen branding text (No nets needed)
       text:
         what: ceoloide/utility_text
@@ -252,12 +290,12 @@ pcbs:
         adjust:
           rotate: -65
         params:
-            designator: 'TXT'
-            side: 'F'
-            thickness: 0.75
-            height: 5
-            width: 5
-            knockout: true
-            bold: true
-            italic: true
-            text: 'Ice60'
+          designator: 'TXT'
+          side: 'F'
+          thickness: 0.75
+          height: 5
+          width: 5
+          knockout: true
+          bold: true
+          italic: true
+          text: 'Ice60'
