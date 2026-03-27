@@ -281,6 +281,23 @@ pcbs:
           ref: matrix_inner_home
           shift: [1.25kx, -0.75ky]   # center of the jumper row
 
+      jumper_text:
+        what: ceoloide/utility_text
+        where:
+          ref: matrix_inner_home
+          shift: [1.25kx, -0.9ky]
+        adjust:
+        params:
+          designator: 'TXT'
+          side: 'B'
+          thickness: 0.2
+          height: 1
+          width: 1
+          knockout: false
+          bold: false
+          italic: false
+          text: 'Bridge this side (Back)'
+
       # Silkscreen branding text (No nets needed)
       text:
         what: ceoloide/utility_text
